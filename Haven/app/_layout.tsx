@@ -1,8 +1,7 @@
-// _layout.tsx
-import 'react-native-gesture-handler';  // Import gesture handler
+import 'react-native-gesture-handler';
 import React from 'react';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';  // Import GestureHandlerRootView
-import SideDrawerNavigator from './Navigation/SideDrawerNavigator';  // Import SideDrawerNavigator
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import SideDrawerNavigator from './Navigation/SideDrawerNavigator';
 
 const Layout = () => {
   return (
@@ -12,7 +11,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;  // Ensure Layout is the default export
-
-
-
+export default Layout;

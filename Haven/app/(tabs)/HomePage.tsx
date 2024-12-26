@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TextInput } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <View style={styles.container}>
       {/* Header Section */}
-      <View style={styles.header}>
+      <View style={styles.header}> 
         <View style={styles.headerTextContainer}>
           <Text style={styles.welcomeText}>Welcome!</Text>
           <Text style={styles.userName}>Priyanshi</Text>
@@ -49,15 +49,24 @@ export default function HomePage() {
       {/* Safety Insider Section */}
       <ScrollView style={styles.safetyInsider}>
         <Text style={styles.sectionTitle}>Safety insider</Text>
-        <TouchableOpacity style={styles.insiderItem}>
+        <TouchableOpacity 
+          style={styles.insiderItem}
+          onPress={() => navigation.navigate('SafetyInsider', { articleTitle: 'Heatwave Alert: Tips to Stay Hydrated' })} // Navigate to SafetyInsider page
+        >
           <Text style={styles.insiderTitle}>Heatwave Alert: Tips to Stay Hydrated</Text>
           <Text style={styles.insiderDate}>Sep 10, 2024 • 1 min read</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.insiderItem}>
+        <TouchableOpacity 
+          style={styles.insiderItem}
+          onPress={() => navigation.navigate('SafetyInsider', { articleTitle: 'Understanding Emergency Exits' })} // Navigate to SafetyInsider page
+        >
           <Text style={styles.insiderTitle}>Understanding Emergency Exits</Text>
           <Text style={styles.insiderDate}>Sep 09, 2024 • 2 min read</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.insiderItem}>
+        <TouchableOpacity 
+          style={styles.insiderItem}
+          onPress={() => navigation.navigate('SafetyInsider', { articleTitle: 'Uber Launches a Safety-Cam' })} // Navigate to SafetyInsider page
+        >
           <Text style={styles.insiderTitle}>Uber Launches a Safety-Cam</Text>
           <Text style={styles.insiderDate}>Sep 08, 2024 • 3 min read</Text>
         </TouchableOpacity>
@@ -73,9 +82,6 @@ export default function HomePage() {
     </View>
   );
 }
-
-// Your styles remain unchanged
-
 
 const styles = StyleSheet.create({
   container: {
@@ -190,4 +196,3 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
-
