@@ -1,6 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import BottomNavigator from './BottomNavigator';
 import FAQsPage from '../(tabs)/FAQsPage';
@@ -72,7 +72,7 @@ const CustomDrawerContent = ({ navigation }) => {
         
         <TouchableOpacity
           style={styles.settingsButton}
-          onPress={() => navigation.navigate('Settings')}  // Redirect to settings page
+          onPress={() => navigation.navigate('Settings')} // Redirect to settings page
         >
           <Ionicons name="settings-outline" size={24} color="black" />
         </TouchableOpacity>
@@ -92,17 +92,30 @@ const CustomDrawerContent = ({ navigation }) => {
   );
 };
 
-
 // Main Drawer Navigator
 export default function SideDrawerNavigator() {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Home" component={BottomNavigator} />
-      <Drawer.Screen name="FAQs" component={FAQsPage} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="AboutUs" component={AboutUsPage} />
-      <Drawer.Screen name="SafetyInsider" component={SafetyInsiderPage} />
-      <Drawer.Screen name="Settings" component={SettingsPage} />
+      <Drawer.Screen 
+        name="HAVEN" 
+        component={BottomNavigator} 
+        options={{
+          headerTitle: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', flex: 1 }}>
+              <Image 
+                source={require('../Images/Logo.png')} 
+                style={{ width: 130, height: 100 }} 
+                resizeMode="contain" 
+              />
+            </View>
+          )
+        }}
+      />
+      <Drawer.Screen name="FAQs" component={FAQsPage} options={{ headerShown: false }} />
+      <Drawer.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+      <Drawer.Screen name="AboutUs" component={AboutUsPage} options={{ headerShown: false }} />
+      <Drawer.Screen name="SafetyInsider" component={SafetyInsiderPage} options={{ headerShown: false }} />
+      <Drawer.Screen name="Settings" component={SettingsPage} options={{ headerShown: false }} />
     </Drawer.Navigator>
   );
 }
@@ -192,7 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
-    width:280,
+    width: 280,
   },
   logoutButtonText: {
     color: '#fff',

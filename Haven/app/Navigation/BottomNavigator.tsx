@@ -90,9 +90,9 @@ export default function BottomNavigator({ navigation }) {
           tabBarInactiveTintColor: 'gray',
         })}
       >
-        <Tab.Screen name="Home" component={HomePage} />
-        <Tab.Screen name="Maps" component={MapsPage} />
-        <Tab.Screen name="Contacts" component={ContactsPage} />
+        <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }}  />
+        <Tab.Screen name="Maps" component={MapsPage} options={{ headerShown: false }} />
+        <Tab.Screen name="Contacts" component={ContactsPage} options={{headerShown: false}} />
 
         {/* The 'More' tab uses a listener to toggle the drawer */}
         <Tab.Screen
