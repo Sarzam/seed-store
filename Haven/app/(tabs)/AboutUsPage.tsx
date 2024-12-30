@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5, // For Android shadow effect
-    margin:10,
+    margin:20,
   },
   subheading: {
     fontSize: 24,
