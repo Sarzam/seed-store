@@ -7,6 +7,7 @@ import FAQsPage from '../(tabs)/FAQsPage';
 import AboutUsPage from '../(tabs)/AboutUsPage';
 import SafetyInsiderPage from '../(tabs)/SafetyInsiderPage';
 import SettingsPage from '../(tabs)/SettingsPage';
+import UploadImagePage from '../(tabs)/UploadImagePage'; // Import the UploadImagePage
 
 const Drawer = createDrawerNavigator();
 
@@ -39,6 +40,14 @@ const CustomDrawerContent = ({ navigation }) => {
 
       {/* Menu Items */}
       <View style={styles.menuContainer}>
+        {/* Upload Image Button */}
+        <TouchableOpacity
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('UploadImage')} // Navigate to UploadImagePage
+        >
+          <Text style={styles.buttonText}>Upload Image</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.menuButton}
           onPress={() => navigation.navigate('SafetyInsider')}
@@ -80,11 +89,11 @@ const CustomDrawerContent = ({ navigation }) => {
 
       {/* Privacy Policy and Terms */}
       <View style={styles.footerLinksContainer}>
-        <TouchableOpacity onPress={() => alert('Privacy Policy')}>
+        <TouchableOpacity onPress={() => alert('Privacy Policy info')}>
           <Text style={styles.footerLink}>Privacy Policy</Text>
         </TouchableOpacity>
         <Text style={styles.footerLinkDivider}> | </Text>
-        <TouchableOpacity onPress={() => alert('Terms and Conditions')}>
+        <TouchableOpacity onPress={() => alert('Terms and Conditions info')}>
           <Text style={styles.footerLink}>Terms and Conditions</Text>
         </TouchableOpacity>
       </View>
@@ -92,30 +101,23 @@ const CustomDrawerContent = ({ navigation }) => {
   );
 };
 
-// Main Drawer Navigator
 export default function SideDrawerNavigator() {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />}>
       <Drawer.Screen 
         name="HAVEN" 
-        component={BottomNavigator} 
+        component={BottomNavigator} // Ensure BottomNavigator is passed correctly
         options={{
-          headerTitle: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', flex: 1 }}>
-              <Image 
-                source={require('../Images/Logo.png')} 
-                style={{ width: 130, height: 100 }} 
-                resizeMode="contain" 
-              />
-            </View>
-          )
+          headerShown: false,
+          
         }}
       />
-      <Drawer.Screen name="FAQs" component={FAQsPage} options={{ headerShown: false }} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-      <Drawer.Screen name="AboutUs" component={AboutUsPage} options={{ headerShown: false }} />
-      <Drawer.Screen name="SafetyInsider" component={SafetyInsiderPage} options={{ headerShown: false }} />
-      <Drawer.Screen name="Settings" component={SettingsPage} options={{ headerShown: false }} />
+      <Drawer.Screen name="FAQs" component={FAQsPage} />
+      <Drawer.Screen name="Profile" component={ProfileScreen}/>
+      <Drawer.Screen name="AboutUs" component={AboutUsPage} />
+      <Drawer.Screen name="SafetyInsider" component={SafetyInsiderPage}/>
+      <Drawer.Screen name="Settings" component={SettingsPage}/>
+      <Drawer.Screen name="UploadImage" component={UploadImagePage} /> 
     </Drawer.Navigator>
   );
 }
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   menuContainer: {
-    marginTop: 220,
+    marginTop: 130, // Reduced marginTop for menu items to move them up
     justifyContent: 'center',
   },
   menuButton: {
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   footerLinksContainer: {
-    marginTop: 20,
+    marginTop: 10, // Reduced top margin to make it visible
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
