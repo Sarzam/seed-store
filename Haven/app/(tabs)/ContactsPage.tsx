@@ -1,76 +1,55 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Alert } from 'react-native';
+import { FlatList, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const EmergencyContacts = () => {
-  // Predefined static contacts
+const ContactListPage = () => {
+  const navigation = useNavigation();
+
+  // Dummy contact data
   const contacts = [
-    { id: '1', name: 'John Doe', phone: '+1234567890' },
-    { id: '2', name: 'Jane Smith', phone: '+0987654321' },
-    { id: '3', name: 'Alice Johnson', phone: '+1122334455' },
+    { id: '1', name: 'John Doe', phone: '1234567890', email: 'john@example.com' },
+    { id: '2', name: 'Jane Smith', phone: '9876543210', email: 'jane@example.com' },
+    { id: '3', name: 'Alice Johnson', phone: '5556789123', email: 'alice@example.com' },
   ];
 
-  // Function to send an alert to all contacts
-  const sendAlert = () => {
-    Alert.alert(
-      'Alert Sent',
-      `Alerts have been sent to the following numbers:\n${contacts
-        .map((contact) => `${contact.name} (${contact.phone})`)
-        .join('\n')}`
-    );
+  const handleContactPress = (contact) => {
+    navigation.navigate('ContactDets', { contact }); // Pass contact data to details page
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Emergency Contacts</Text>
-
-      {/* List of Static Contacts */}
-      <FlatList
-        data={contacts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.contactItem}>
-            <Text style={styles.contactText}>
-              {item.name} ({item.phone})
-            </Text>
-          </View>
-        )}
-      />
-
-      {/* Button to Send Alerts */}
-      <View style={styles.alertButtonContainer}>
-        <Button title="Send Alert to All Contacts" onPress={sendAlert} color="red" />
-      </View>
-    </View>
+    <FlatList
+      data={contacts}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
+        <TouchableOpacity style={styles.contactItem} onPress={() => handleContactPress(item)}>
+          <Text style={styles.contactName}>{item.name}</Text>
+          <Text style={styles.contactPhone}>{item.phone}</Text>
+        </TouchableOpacity>
+      )}
+      contentContainerStyle={styles.listContainer}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+  listContainer: {
+    padding: 16,
   },
   contactItem: {
-    padding: 10,
-    marginVertical: 5,
+    padding: 16,
+    marginBottom: 10,
     backgroundColor: '#f9f9f9',
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    borderRadius: 8,
+    elevation: 1,
   },
-  contactText: {
-    fontSize: 16,
+  contactName: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  alertButtonContainer: {
-    marginTop: 20,
+  contactPhone: {
+    fontSize: 14,
+    color: '#555',
   },
 });
 
-export default EmergencyContacts;
-
+export default ContactListPage;

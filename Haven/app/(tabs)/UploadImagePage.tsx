@@ -9,19 +9,23 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Modal,
+  FlatList,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
+import * as Sharing from 'expo-sharing';
 
 const UploadImagePage = () => {
-  const [image, setImage] = useState(null); // For storing the uploaded image
+  const [images, setImages] = useState([]); // For storing multiple images
   const [loading, setLoading] = useState(false); // For showing processing status
   const [results, setResults] = useState([]); // Detected objects
   const [location, setLocation] = useState(''); // User-added location info
   const [predictedLocation, setPredictedLocation] = useState(''); // Predicted location info
   const [cameraPermission, setCameraPermission] = useState(false);
-  const [isCapturing, setIsCapturing] = useState(false); // For periodic capture
   const [galleryPermission, setGalleryPermission] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false); // For confirmation modal
+  const [isCapturing, setIsCapturing] = useState(false); // For periodic capture
   const [userVerified, setUserVerified] = useState(false); // For user verification status
   const [userEmotion, setUserEmotion] = useState(''); // For detecting emotion
 
@@ -39,22 +43,44 @@ const UploadImagePage = () => {
   };
 
   const handleImageUpload = async () => {
-    if (!galleryPermission) {
-      Alert.alert('Permission Denied', 'Please grant gallery access.');
+    if (!galleryPermission && !cameraPermission) {
+      Alert.alert('Permission Denied', 'Please grant camera and gallery access.');
       return;
     }
-  
+    setIsModalVisible(true); // Show modal for choosing upload option
+  };
+
+  const handleChooseFromGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setImages((prevImages) => [...prevImages, result.assets[0].uri]);
       processImage(result.assets[0].uri); // Trigger object detection and enhancement
     }
+    setIsModalVisible(false); // Close modal
+  };
+
+  const handleCaptureFromCamera = async () => {
+    if (!cameraPermission) {
+      Alert.alert('Permission Denied', 'Please grant camera access.');
+      return;
+    }
+
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImages((prevImages) => [...prevImages, result.assets[0].uri]);
+      processImage(result.assets[0].uri); // Trigger object detection and enhancement
+    }
+    setIsModalVisible(false); // Close modal
   };
 
   // Simulated Image Enhancement & Object Detection
@@ -69,63 +95,27 @@ const UploadImagePage = () => {
     }, 3000); // Simulated delay for processing
   };
 
-  // Periodic photo capture
-  const startPeriodicCapture = async () => {
-    if (!cameraPermission) {
-      Alert.alert('Please enable camera permissions to use this feature.');
-      return;
+  // Location validation and suggestion
+  const handleLocationChange = async (text) => {
+    setLocation(text);
+    if (text) {
+      // Fetch location suggestions using Google Places API (or other API)
+      setLocationSuggestions(['Suggested Location 1', 'Suggested Location 2']);
+    } else {
+      setLocationSuggestions([]);
     }
-
-    setIsCapturing(true);
-
-    const interval = setInterval(async () => {
-      if (isCapturing) {
-        console.log('Capturing front and rear camera photos...');
-
-        // Simulate front camera capture (User verification)
-        console.log('Front camera photo taken for user verification.');
-        const verified = await verifyUser(); // Simulated user verification
-        setUserVerified(verified);
-
-        // Simulate rear camera capture (Emotion detection)
-        console.log('Rear camera photo taken for emotion detection.');
-        const emotion = await detectEmotion(); // Simulated emotion detection
-        setUserEmotion(emotion);
-
-        // Simulate rear camera capture for object detection
-        console.log('Rear camera photo taken for surroundings detection.');
-      } else {
-        clearInterval(interval);
-      }
-    }, 5000); // Capture photos every 5 seconds
   };
 
-  const stopPeriodicCapture = () => {
-    setIsCapturing(false);
-    Alert.alert('Periodic capture stopped.');
-  };
-
-  // Simulated user verification (e.g., comparing face or ID)
-  const verifyUser = async () => {
-    // Simulate user verification logic here
-    return true; // Assuming user is verified
-  };
-
-  // Simulated emotion detection (e.g., analyzing user facial expressions)
-  const detectEmotion = async () => {
-    // Simulate emotion detection logic here
-    return 'Fear'; // Example emotion detected
-  };
-
-  // Save/Contribute Functionality
   const handleSave = () => {
-    console.log('Image, results, and location saved to database!');
+    console.log('Images, results, and location saved to database!');
   };
 
-  // Share Functionality
-  const handleShare = () => {
-    console.log('Shared with emergency contacts!');
-    alert(`Sending the image and predicted location to emergency contacts: ${predictedLocation}`);
+  const handleShare = async () => {
+    if (await Sharing.isAvailableAsync()) {
+      Sharing.shareAsync(images[0]); // Share the first image
+    } else {
+      alert(`Sharing image and predicted location: ${predictedLocation}`);
+    }
   };
 
   useEffect(() => {
@@ -137,12 +127,16 @@ const UploadImagePage = () => {
       <Text style={styles.title}>Upload Image of Landmark</Text>
       <Button title="Upload Image" onPress={handleImageUpload} />
 
-      {image && (
-        <View style={styles.previewContainer}>
-          <Text style={styles.subTitle}>Image Preview</Text>
-          <Image source={{ uri: image }} style={styles.imagePreview} />
-        </View>
-      )}
+      <FlatList
+        data={images}
+        renderItem={({ item, index }) => (
+          <View style={styles.previewContainer}>
+            <Image source={{ uri: item }} style={styles.imagePreview} />
+          </View>
+        )}
+        horizontal
+        keyExtractor={(item, index) => index.toString()}
+      />
 
       {loading && (
         <View style={styles.loadingContainer}>
@@ -169,44 +163,42 @@ const UploadImagePage = () => {
         </View>
       )}
 
-      {image && !loading && !predictedLocation && (
+      {images.length > 0 && !loading && !predictedLocation && (
         <View style={styles.locationContainer}>
           <Text style={styles.subTitle}>Add Location (Optional):</Text>
           <TextInput
             style={styles.input}
             placeholder="Enter location"
             value={location}
-            onChangeText={(text) => setLocation(text)}
+            onChangeText={handleLocationChange}
           />
         </View>
       )}
 
-      {userVerified && (
-        <Text style={styles.userStatus}>User Verified Successfully</Text>
-      )}
-
-      {userEmotion && (
-        <Text style={styles.emotionStatus}>Detected Emotion: {userEmotion}</Text>
-      )}
-
       <View style={styles.actionButtons}>
-        <Button
-          title={isCapturing ? 'Stop Periodic Capture' : 'Start Periodic Capture'}
-          onPress={isCapturing ? stopPeriodicCapture : startPeriodicCapture}
-          color={isCapturing ? 'red' : 'green'}
-        />
+        <TouchableOpacity style={styles.button} onPress={handleSave}>
+          <Text style={styles.buttonText}>Save</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleShare}>
+          <Text style={styles.buttonText}>Share</Text>
+        </TouchableOpacity>
       </View>
 
-      {image && !loading && (
-        <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText}>Open in Maps</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={handleShare}>
-            <Text style={styles.buttonText}>Share with Contact</Text>
-          </TouchableOpacity>
+      {/* Modal for selecting image source */}
+      <Modal
+        visible={isModalVisible}
+        onRequestClose={() => setIsModalVisible(false)}
+        transparent
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>Choose Image Source</Text>
+            <Button title="Choose Photo from Gallery" onPress={handleChooseFromGallery} />
+            <Button title="Capture Image from Camera" onPress={handleCaptureFromCamera} />
+            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+          </View>
         </View>
-      )}
+      </Modal>
     </View>
   );
 };
@@ -222,28 +214,29 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
+    marginBottom: 20,
+    color: '#007BFF',
   },
   previewContainer: {
-    alignItems: 'center',
-    marginVertical: 10,
+    marginRight: 10,
   },
   imagePreview: {
-    width: 200,
-    height: 200,
-    borderRadius: 10,
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+    borderRadius: 8,
+    resizeMode: 'cover',
   },
   loadingContainer: {
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 20,
   },
   processingText: {
     fontSize: 16,
     marginTop: 10,
   },
   resultsContainer: {
-    marginVertical: 10,
+    marginTop: 20,
   },
   subTitle: {
     fontSize: 18,
@@ -251,43 +244,48 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 16,
-    marginLeft: 10,
   },
   locationContainer: {
-    marginVertical: 10,
+    marginTop: 20,
   },
   input: {
+    height: 40,
+    borderColor: '#007BFF',
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 5,
-    padding: 10,
-    marginTop: 5,
+    paddingLeft: 10,
+    marginTop: 10,
   },
   actionButtons: {
-    marginVertical: 10,
+    marginTop: 30,
   },
   button: {
     backgroundColor: '#007BFF',
     padding: 10,
     borderRadius: 5,
+    marginBottom: 10,
     alignItems: 'center',
-    marginVertical: 5,
   },
   buttonText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
   },
-  userStatus: {
-    color: 'green',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 10,
+  modalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  emotionStatus: {
-    color: 'red',
-    fontSize: 16,
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginBottom: 20,
   },
 });

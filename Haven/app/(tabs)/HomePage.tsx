@@ -89,16 +89,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F9FA',
   },
   header: {
-    padding: 20,
+    padding: 30,
+    paddingTop:90,
     backgroundColor: '#ADD8E6',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
+    height:250,
   },
   headerTextContainer: {
     marginLeft: 0,
   },
   welcomeText: {
-    fontSize: 40,
+    fontSize: 50,
     fontWeight: 'bold',
     color: 'black',
   },
