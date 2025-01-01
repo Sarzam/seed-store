@@ -25,9 +25,6 @@ const UploadImagePage = () => {
   const [cameraPermission, setCameraPermission] = useState(false);
   const [galleryPermission, setGalleryPermission] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false); // For confirmation modal
-  const [isCapturing, setIsCapturing] = useState(false); // For periodic capture
-  const [userVerified, setUserVerified] = useState(false); // For user verification status
-  const [userEmotion, setUserEmotion] = useState(''); // For detecting emotion
 
   // Request permissions
   const requestPermissions = async () => {
@@ -42,7 +39,7 @@ const UploadImagePage = () => {
     }
   };
 
-  const handleImageUpload = async () => {
+  const handleImageUpload = () => {
     if (!galleryPermission && !cameraPermission) {
       Alert.alert('Permission Denied', 'Please grant camera and gallery access.');
       return;
@@ -53,14 +50,14 @@ const UploadImagePage = () => {
   const handleChooseFromGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
+      allowsMultipleSelection: true, // Enable selecting multiple images
       quality: 1,
     });
 
     if (!result.canceled) {
-      setImages((prevImages) => [...prevImages, result.assets[0].uri]);
-      processImage(result.assets[0].uri); // Trigger object detection and enhancement
+      const selectedImages = result.assets.map((asset) => asset.uri);
+      setImages((prevImages) => [...prevImages, ...selectedImages]);
+      selectedImages.forEach((uri) => processImage(uri)); // Process each selected image
     }
     setIsModalVisible(false); // Close modal
   };
@@ -83,27 +80,23 @@ const UploadImagePage = () => {
     setIsModalVisible(false); // Close modal
   };
 
-  // Simulated Image Enhancement & Object Detection
   const processImage = async (uri) => {
     setLoading(true);
-
-    // Simulated enhancement and detection
     setTimeout(() => {
       setResults(['Tree', 'Building', 'Car']); // Simulated detected objects
       setPredictedLocation('123 Main St, Cityville');
       setLoading(false);
-    }, 3000); // Simulated delay for processing
+    }, 2000); // Simulated delay for processing
   };
 
-  // Location validation and suggestion
-  const handleLocationChange = async (text) => {
-    setLocation(text);
-    if (text) {
-      // Fetch location suggestions using Google Places API (or other API)
-      setLocationSuggestions(['Suggested Location 1', 'Suggested Location 2']);
-    } else {
-      setLocationSuggestions([]);
-    }
+  const handleRemoveImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleClearAllImages = () => {
+    setImages([]);
+    setResults([]);
+    setPredictedLocation('');
   };
 
   const handleSave = () => {
@@ -132,11 +125,26 @@ const UploadImagePage = () => {
         renderItem={({ item, index }) => (
           <View style={styles.previewContainer}>
             <Image source={{ uri: item }} style={styles.imagePreview} />
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => handleRemoveImage(index)}
+            >
+              <Text style={styles.removeButtonText}>x</Text>
+            </TouchableOpacity>
           </View>
         )}
         horizontal
         keyExtractor={(item, index) => index.toString()}
       />
+
+      {images.length > 0 && (
+        <TouchableOpacity
+          style={styles.clearAllButton}
+          onPress={handleClearAllImages}
+        >
+          <Text style={styles.clearAllButtonText}>Clear All Images</Text>
+        </TouchableOpacity>
+      )}
 
       {loading && (
         <View style={styles.loadingContainer}>
@@ -163,18 +171,6 @@ const UploadImagePage = () => {
         </View>
       )}
 
-      {images.length > 0 && !loading && !predictedLocation && (
-        <View style={styles.locationContainer}>
-          <Text style={styles.subTitle}>Add Location (Optional):</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter location"
-            value={location}
-            onChangeText={handleLocationChange}
-          />
-        </View>
-      )}
-
       <View style={styles.actionButtons}>
         <TouchableOpacity style={styles.button} onPress={handleSave}>
           <Text style={styles.buttonText}>Save</Text>
@@ -193,7 +189,7 @@ const UploadImagePage = () => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <Text style={styles.modalText}>Choose Image Source</Text>
-            <Button title="Choose Photo from Gallery" onPress={handleChooseFromGallery} />
+            <Button title="Choose Photos from Gallery" onPress={handleChooseFromGallery} />
             <Button title="Capture Image from Camera" onPress={handleCaptureFromCamera} />
             <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
           </View>
@@ -219,13 +215,47 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     marginRight: 10,
+    alignItems: 'center',
   },
   imagePreview: {
+    marginTop:10,
     width: 100,
     height: 100,
-    marginBottom: 10,
     borderRadius: 8,
     resizeMode: 'cover',
+  },
+  removeButton: {
+    marginTop:10,
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
+    backgroundColor: 'red',
+  },
+  removeButtonText: {
+    color:"white",
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  clearAllButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#FF4500',
+    borderRadius: 5,
+    alignSelf: 'center',
+  },
+  clearAllButtonText: {
+    color: 'white',
+    fontSize: 14,
   },
   loadingContainer: {
     alignItems: 'center',
@@ -244,17 +274,6 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 16,
-  },
-  locationContainer: {
-    marginTop: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: '#007BFF',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    marginTop: 10,
   },
   actionButtons: {
     marginTop: 30,

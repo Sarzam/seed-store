@@ -11,6 +11,7 @@ import {
 const FAQ = ({ navigation }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [userQuestion, setUserQuestion] = useState("");
 
   const faqs = [
     {
@@ -133,8 +134,15 @@ const FAQ = ({ navigation }) => {
         section.questions.length > 0
     );
 
+  const handleQuestionSubmit = () => {
+    // Handle submitting the user's question (e.g., send it to the server, or handle it locally)
+    console.log("User's question:", userQuestion);
+    setUserQuestion(""); // Clear the input field
+    alert("Your question has been submitted. We will get back to you soon.");
+  };
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <Text style={styles.header}>FAQs</Text>
       <TextInput
         style={styles.searchBar}
@@ -163,17 +171,30 @@ const FAQ = ({ navigation }) => {
         </View>
       ))}
 
-      {/* <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()} // Go back to the previous screen (Contacts)
-      >
-        <Text style={styles.buttonText}>Back to HomePage</Text>
-      </TouchableOpacity> */}
+      {/* Post your question section */}
+      <View style={styles.questionSection}>
+        <Text style={styles.questionPrompt}>
+          Didn't find an answer to your query? Post your question here, and we will get back to you!
+        </Text>
+        <TextInput
+          style={styles.inputField}
+          placeholder="Write your question..."
+          value={userQuestion}
+          onChangeText={(text) => setUserQuestion(text)}
+        />
+        <TouchableOpacity style={styles.submitButton} onPress={handleQuestionSubmit}>
+          <Text style={styles.submitButtonText}>Submit Question</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollViewContent: {
+    flexGrow: 1, // Ensures the content expands to fill available space
+    paddingBottom: 20, // Adds space at the bottom to ensure proper scrolling
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -218,14 +239,32 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#555",
   },
-  backButton: {
-    marginTop: 20,
-    backgroundColor: "#007bff",
+  questionSection: {
+    marginTop: 30,
+    padding: 20,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 8,
+  },
+  questionPrompt: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+  inputField: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
     padding: 10,
+    marginBottom: 15,
+  },
+  submitButton: {
+    backgroundColor: "#007bff",
+    padding: 12,
     borderRadius: 8,
     alignItems: "center",
   },
-  buttonText: {
+  submitButtonText: {
     color: "#fff",
     fontSize: 16,
   },
