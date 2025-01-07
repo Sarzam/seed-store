@@ -18,7 +18,7 @@ const CustomDrawerContent = ({ navigation }) => {
     <View style={styles.drawerContainer}>
       {/* Profile Section */}
       <View style={styles.profileSection}>
-        <Ionicons name="person-circle-outline" size={80} color="#0a7ea4" style={styles.userIcon} />
+        <Ionicons name="person-circle-outline" size={80} color="#373F51" style={styles.userIcon} />
         <View style={styles.profileDetailsContainer}>
           <Text style={styles.profileName}>Priyanshi Mehta</Text>
           <Text style={styles.profileDetails}>pvmehta112@example.com</Text>
@@ -384,12 +384,12 @@ const styles = StyleSheet.create({
   },
   profileDetails: {
     fontSize: 18,
-    color: '#666',
+    color: '#373F51',
     marginBottom: 5,
   },
   viewProfileButton: {
     marginTop: 10,
-    backgroundColor: '#0a7ea4',
+    backgroundColor: '#373F51',
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   menuButton: {
-    backgroundColor: '#0a7ea4',
+    backgroundColor: '#373F51',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   logoutButtonContainer: {
-    backgroundColor: '#FF4D4D',
+    backgroundColor: '#AB0D0D',
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: 'center',
@@ -463,11 +463,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  // profileInfo: {
-  //   fontSize: 16,
-  //   marginBottom: 10,
-  //   color: '#333',
-  // },
   detailContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -500,7 +495,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
-    padding: 5,
+    padding: 12,
+    margin:5,
+    marginBottom: 10,
+    width:300,
   },
   actionButtons: {
     flexDirection: 'row',
@@ -520,20 +518,16 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#FF6B6B",
+    backgroundColor: "#373F51",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
   },
   avatarText: {
     fontSize: 24,
-    color: "#fff",
+    color: "white",
     fontWeight: "bold",
    },
-  // profileName: {
-  //   fontSize: 20,
-  //   fontWeight: "bold",
-  // },
   profileId: {
     fontSize: 14,
     color: "gray",
@@ -563,24 +557,20 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   updateButton: {
-    backgroundColor: "#A0522D",
+    backgroundColor: "#373F51",
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: "center",
   },
   changeButton: {
-    backgroundColor: "#A0522D",
+    backgroundColor: "#373F51",
     paddingVertical: 10,
     borderRadius: 5,
     alignItems: "center",
   },
-  // buttonText: {
-  //   color: "#fff",
-  //   fontWeight: "bold",
-  // },
   deleteText: {
     fontSize: 16,
-    color: "#FF6B6B",
+    color: "#AB0D0D",
     fontWeight: "bold",
   },
   deleteDescription: {
@@ -605,15 +595,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
   },
-  // input: {
-  //   width: "100%",
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: "#ddd",
-  //   marginBottom: 15,
-  //   fontSize: 16,
-  // },
   saveButton: {
-    backgroundColor: "#FF6B6B",
+    backgroundColor: "#AB0D0D",
     paddingVertical: 10,
     borderRadius: 5,
     width: "100%",

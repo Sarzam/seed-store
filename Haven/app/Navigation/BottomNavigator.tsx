@@ -33,7 +33,7 @@ export default function BottomNavigator() {
             const iconName = tabIcons[route.name] || '';
             return <Icon name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007BFF',
+          tabBarActiveTintColor: '#373F51',
           tabBarInactiveTintColor: 'gray',
         })}
       >
@@ -57,7 +57,7 @@ export default function BottomNavigator() {
         style={styles.fab}
         onPress={() => navigation.navigate('UploadImagePage')} // Navigate to UploadImagePage
       >
-        <Icon name="add" size={30} color="white" />
+        <Icon name="add" size={30} color="#373F51" />
       </TouchableOpacity>
     </>
   );
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     bottom: 30,
     left: '50%',
     transform: [{ translateX: -30 }],
-    backgroundColor: '#0a7ea4',
+    backgroundColor: '#373F51',
     borderRadius: 50,
     width: 60,
     height: 60,
