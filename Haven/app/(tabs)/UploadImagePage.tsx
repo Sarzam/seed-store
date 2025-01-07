@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Alert,
   Modal,
   FlatList,
@@ -17,57 +16,54 @@ import { Camera } from 'expo-camera';
 import * as Sharing from 'expo-sharing';
 
 const UploadImagePage = () => {
-  const [images, setImages] = useState([]); // For storing multiple images
-  const [loading, setLoading] = useState(false); // For showing processing status
-  const [results, setResults] = useState([]); // Detected objects
-  const [location, setLocation] = useState(''); // User-added location info
-  const [predictedLocation, setPredictedLocation] = useState(''); // Predicted location info
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
+  const [predictedLocation, setPredictedLocation] = useState('');
   const [cameraPermission, setCameraPermission] = useState(false);
   const [galleryPermission, setGalleryPermission] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false); // For confirmation modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Request permissions
+  useEffect(() => {
+    requestPermissions();
+  }, []);
+
   const requestPermissions = async () => {
     const cameraStatus = await Camera.requestCameraPermissionsAsync();
     const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (cameraStatus.status === 'granted') setCameraPermission(true);
-    if (galleryStatus.status === 'granted') setGalleryPermission(true);
+    setCameraPermission(cameraStatus.status === 'granted');
+    setGalleryPermission(galleryStatus.status === 'granted');
 
-    if (cameraStatus.status !== 'granted' || galleryStatus.status !== 'granted') {
-      Alert.alert('Permissions required', 'Camera and Gallery access are required.');
+    if (!cameraPermission || !galleryPermission) {
+      Alert.alert('Permissions Required', 'Please allow camera and gallery access.');
     }
   };
 
   const handleImageUpload = () => {
-    if (!galleryPermission && !cameraPermission) {
-      Alert.alert('Permission Denied', 'Please grant camera and gallery access.');
+    if (!cameraPermission && !galleryPermission) {
+      Alert.alert('Permission Denied', 'Grant camera and gallery access.');
       return;
     }
-    setIsModalVisible(true); // Show modal for choosing upload option
+    setIsModalVisible(true);
   };
 
   const handleChooseFromGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsMultipleSelection: true, // Enable selecting multiple images
+      allowsMultipleSelection: true,
       quality: 1,
     });
 
     if (!result.canceled) {
       const selectedImages = result.assets.map((asset) => asset.uri);
       setImages((prevImages) => [...prevImages, ...selectedImages]);
-      selectedImages.forEach((uri) => processImage(uri)); // Process each selected image
+      selectedImages.forEach((uri) => processImage(uri));
     }
-    setIsModalVisible(false); // Close modal
+    setIsModalVisible(false);
   };
 
   const handleCaptureFromCamera = async () => {
-    if (!cameraPermission) {
-      Alert.alert('Permission Denied', 'Please grant camera access.');
-      return;
-    }
-
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       quality: 1,
@@ -75,18 +71,18 @@ const UploadImagePage = () => {
 
     if (!result.canceled) {
       setImages((prevImages) => [...prevImages, result.assets[0].uri]);
-      processImage(result.assets[0].uri); // Trigger object detection and enhancement
+      processImage(result.assets[0].uri);
     }
-    setIsModalVisible(false); // Close modal
+    setIsModalVisible(false);
   };
 
   const processImage = async (uri) => {
     setLoading(true);
     setTimeout(() => {
-      setResults(['Tree', 'Building', 'Car']); // Simulated detected objects
+      setResults(['Tree', 'Building', 'Car']);
       setPredictedLocation('123 Main St, Cityville');
       setLoading(false);
-    }, 2000); // Simulated delay for processing
+    }, 2000);
   };
 
   const handleRemoveImage = (index) => {
@@ -105,25 +101,23 @@ const UploadImagePage = () => {
 
   const handleShare = async () => {
     if (await Sharing.isAvailableAsync()) {
-      Sharing.shareAsync(images[0]); // Share the first image
+      Sharing.shareAsync(images[0]);
     } else {
       alert(`Sharing image and predicted location: ${predictedLocation}`);
     }
   };
 
-  useEffect(() => {
-    requestPermissions();
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Upload Image of Landmark</Text>
-      <Button title="Upload Image" onPress={handleImageUpload} />
+      <Text style={styles.title}>Landmark Image Uploader</Text>
+      <TouchableOpacity style={styles.uploadButton} onPress={handleImageUpload}>
+        <Text style={styles.uploadButtonText}>Upload Image</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={images}
         renderItem={({ item, index }) => (
-          <View style={styles.previewContainer}>
+          <View style={styles.imageContainer}>
             <Image source={{ uri: item }} style={styles.imagePreview} />
             <TouchableOpacity
               style={styles.removeButton}
@@ -135,21 +129,19 @@ const UploadImagePage = () => {
         )}
         horizontal
         keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.imageList}
       />
 
       {images.length > 0 && (
-        <TouchableOpacity
-          style={styles.clearAllButton}
-          onPress={handleClearAllImages}
-        >
-          <Text style={styles.clearAllButtonText}>Clear All Images</Text>
+        <TouchableOpacity style={styles.clearButton} onPress={handleClearAllImages}>
+          <Text style={styles.clearButtonText}>Clear All</Text>
         </TouchableOpacity>
       )}
 
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#007BFF" />
-          <Text style={styles.processingText}>Detecting objects...</Text>
+          <Text style={styles.loadingText}>Processing Image...</Text>
         </View>
       )}
 
@@ -172,26 +164,27 @@ const UploadImagePage = () => {
       )}
 
       <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
-          <Text style={styles.buttonText}>Save</Text>
+        <TouchableOpacity style={styles.actionButton} onPress={handleSave}>
+          <Text style={styles.actionButtonText}>Save</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleShare}>
-          <Text style={styles.buttonText}>Share</Text>
+        <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
+          <Text style={styles.actionButtonText}>Share</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Modal for selecting image source */}
-      <Modal
-        visible={isModalVisible}
-        onRequestClose={() => setIsModalVisible(false)}
-        transparent
-      >
+      <Modal visible={isModalVisible} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalText}>Choose Image Source</Text>
-            <Button title="Choose Photos from Gallery" onPress={handleChooseFromGallery} />
-            <Button title="Capture Image from Camera" onPress={handleCaptureFromCamera} />
-            <Button title="Cancel" onPress={() => setIsModalVisible(false)} />
+            <Text style={styles.modalTitle}>Select Image Source</Text>
+            <TouchableOpacity onPress={handleChooseFromGallery}>
+              <Text style={styles.modalOption}>Choose from Gallery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleCaptureFromCamera}>
+              <Text style={styles.modalOption}>Capture with Camera</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+              <Text style={styles.modalOption}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
@@ -199,112 +192,108 @@ const UploadImagePage = () => {
   );
 };
 
-export default UploadImagePage;
-
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#f8f9fa',
+  container: { 
+    flex: 1, padding: 20, backgroundColor: '#f5f5f5' 
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#007BFF',
+  title: { 
+    fontSize: 24, fontWeight: 'bold', marginBottom: 20, color: '#333' 
   },
-  previewContainer: {
-    marginRight: 10,
-    alignItems: 'center',
+  uploadButton: { 
+    padding: 15, 
+    backgroundColor: '#373F51', 
+    borderRadius: 5, 
+    alignItems: 'center' 
   },
-  imagePreview: {
-    marginTop:10,
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    resizeMode: 'cover',
+  uploadButtonText: { 
+    color: '#fff', fontSize: 16 
+  },
+  imageContainer: { 
+    position: 'relative', margin: 10 
+  },
+  imagePreview: { 
+    width: 100, height: 100, borderRadius: 8 
   },
   removeButton: {
-    marginTop:10,
     position: 'absolute',
     top: 5,
     right: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
+    backgroundColor: '#AB0D0D',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 1,
-    backgroundColor: 'red',
   },
-  removeButtonText: {
-    color:"white",
-    fontSize: 14,
-    fontWeight: 'bold',
+  removeButtonText: { 
+    color: '#fff', 
+    fontSize: 14 
   },
-  clearAllButton: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: '#FF4500',
-    borderRadius: 5,
-    alignSelf: 'center',
+  clearButton: { 
+    padding: 10, 
+    backgroundColor: '#AB0D0D', 
+    alignItems: 'center', 
+    borderRadius: 5 
   },
-  clearAllButtonText: {
-    color: 'white',
-    fontSize: 14,
+  clearButtonText: { 
+    color: '#fff', 
+    fontSize: 14 
   },
-  loadingContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
+  loadingContainer: { 
+    alignItems: 'center', 
+    marginTop: 20 
   },
-  processingText: {
-    fontSize: 16,
-    marginTop: 10,
+  loadingText: { 
+    fontSize: 16, 
+    marginTop: 10 
   },
-  resultsContainer: {
-    marginTop: 20,
+  resultsContainer: { 
+    marginTop: 20 
   },
-  subTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  subTitle: { 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    marginBottom: 10 
   },
-  resultText: {
-    fontSize: 16,
+  resultText: { 
+    fontSize: 16 
   },
-  actionButtons: {
-    marginTop: 30,
+  actionButtons: { 
+    marginTop: 20, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between' 
   },
-  button: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    alignItems: 'center',
+  actionButton: { 
+    flex: 1, 
+    margin: 5, 
+    padding: 10, 
+    backgroundColor: '#373F51', 
+    alignItems: 'center', 
+    borderRadius: 5 
   },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
+  actionButtonText: { 
+    color: '#fff', fontSize: 16 
   },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  modalOverlay: { 
+    flex: 1, 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    justifyContent: 'center', 
+    alignItems: 'center' 
   },
-  modalContent: {
-    width: 300,
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  modalText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  modalContent: { 
+    width: 300, 
+    padding: 20, 
+    backgroundColor: '#fff', 
+    borderRadius: 8, 
+    alignItems: 'center' },
+  modalTitle: {
+     fontSize: 18, 
+     fontWeight: 'bold', 
+     marginBottom: 20 },
+  modalOption: { 
+    fontSize: 16, 
+    paddingVertical: 10 
   },
 });
+
+export default UploadImagePage;

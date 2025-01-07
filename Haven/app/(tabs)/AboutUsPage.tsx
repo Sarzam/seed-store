@@ -7,14 +7,15 @@ export default function AboutUsPage() {
     <ScrollView style={styles.container}>
 
       {/* Hero Section */}
-      <View style={styles.heroSection}>
-        <Text style={styles.heroHeading}>Haven</Text>
-        <Text style={styles.heroText}>Empower your journey with us a place of safety, refuge.</Text>
+      <View style={styles.header}>
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.welcomeText}>Know More About Us</Text>
+              </View>
       </View>
 
       {/* Our Mission Section */}
       <View style={styles.section}>
-        <Feather name="compass" size={30} color="#0a7ea4" style={styles.icon} />
+        <Feather name="compass" size={30} color="#AB0D0D" style={styles.icon} />
         <Text style={styles.subheading}>Our Mission</Text>
         <Text style={styles.paragraph}>
           Our mission is to revolutionize the way you explore the world. By harnessing the power of AI, we aim to provide accurate, real-time location suggestions and intelligent navigation, helping you discover new places with ease.
@@ -23,7 +24,7 @@ export default function AboutUsPage() {
 
       {/* Our Vision Section */}
       <View style={styles.section}>
-        <Feather name="target" size={30} color="#0a7ea4" style={styles.icon} />
+        <Feather name="target" size={30} color="#AB0D0D" style={styles.icon} />
         <Text style={styles.subheading}>Our Vision</Text>
         <Text style={styles.paragraph}>
           To create a world where everyone can navigate their surroundings effortlessly with the help of AI. We believe that AI should not only make life easier but should also make it more enjoyable by allowing you to focus on your experiences, not your directions.
@@ -32,7 +33,7 @@ export default function AboutUsPage() {
 
       {/* AI Technology Section */}
       <View style={styles.section}>
-        <Feather name="cpu" size={30} color="#0a7ea4" style={styles.icon} />
+        <Feather name="cpu" size={30} color="#AB0D0D" style={styles.icon} />
         <Text style={styles.subheading}>AI Technology</Text>
         <Text style={styles.paragraph}>
           At the core of our app is an advanced AI engine that uses machine learning to predict the best locations based on your preferences. Our AI technology evolves with every interaction, learning from user data to provide smarter, faster recommendations.
@@ -41,7 +42,7 @@ export default function AboutUsPage() {
 
       {/* Our Team Section */}
       <View style={styles.section}>
-        <Feather name="users" size={30} color="#0a7ea4" style={styles.icon} />
+        <Feather name="users" size={30} color="#AB0D0D" style={styles.icon} />
         <Text style={styles.subheading}>Meet the Team</Text>
         <Text style={styles.paragraph}>
           Behind this powerful AI-driven platform is a team of passionate developers, data scientists, and user experience experts. We're constantly working to improve the app and provide you with the most intuitive and helpful experience possible.
@@ -50,7 +51,7 @@ export default function AboutUsPage() {
       
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Let us guide you to your next adventure.</Text>
+        <Text style={styles.footerText}>Kavach - Your shield in every step.</Text>
       </View>
     </ScrollView>
   );
@@ -59,8 +60,22 @@ export default function AboutUsPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F4F8', // Light, clean background
+    backgroundColor: '#373F51', // Light, clean background
   },
+  header: {
+    padding: 20,
+    backgroundColor: "#8B183F", // Claret
+    borderRadius: 10,
+    marginBottom: 20,
+    elevation: 5, // Added shadow
+    margin:10,
+  },
+  headerTextContainer: { 
+    alignItems: "flex-start",
+  },
+  welcomeText: { 
+    fontSize: 20, color: "#F2F4F3" 
+  }, // White Smoke
   heroSection: {
     backgroundColor: '#ADD8E6', // Bright blue for a tech-inspired look
     paddingVertical: 40,
@@ -101,7 +116,7 @@ const styles = StyleSheet.create({
   subheading: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#0a7ea4', // Blue color to keep the theme
+    color: '#AB0D0D', // Blue color to keep the theme
     marginBottom: 10,
   },
   paragraph: {
@@ -114,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   footer: {
-    backgroundColor: '#ADD8E6',
+    backgroundColor: '#8B183F',
     paddingVertical: 15,
     alignItems: 'center',
     justifyContent: 'center',
@@ -122,6 +137,6 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#black',
+    color: 'white',
   },
 });

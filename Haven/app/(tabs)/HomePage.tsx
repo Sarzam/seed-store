@@ -48,7 +48,7 @@ const HomeScreen = () => {
         <View style={styles.headerTextContainer}>
           <Text style={styles.welcomeText}>Welcome!</Text>
           <Text style={styles.userName}>Priyanshi</Text>
-          <Text style={styles.greetingText}>How is it going today?</Text>
+          <Text style={styles.greetingText}>Your Shield in Every Step</Text>
         </View>
       </View>
 

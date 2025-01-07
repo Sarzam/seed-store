@@ -8,6 +8,8 @@ import AboutUsPage from '../(tabs)/AboutUsPage';
 import SafetyInsiderPage from '../(tabs)/SafetyInsiderPage';
 import SettingsPage from '../(tabs)/SettingsPage';
 import UploadImagePage from '../(tabs)/UploadImagePage';
+import ReportPage from '../(tabs)/ReportPage';
+import HomePage from '../(tabs)/HomePage';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
@@ -41,7 +43,19 @@ const CustomDrawerContent = ({ navigation }) => {
 
       {/* Menu Items */}
       <View style={styles.menuContainer}>
-        {/* Upload Image Button */}
+        <TouchableOpacity 
+        style={styles.menuButton}
+        onPress={() => navigation.navigate('Home')}
+        >
+          <Text style={styles.buttonText}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.menuButton}
+            onPress={() => navigation.navigate('Report')} // Navigate to UploadImagePage
+          >
+            <Text style={styles.buttonText}>Report Incident</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.menuButton}
           onPress={() => navigation.navigate('UploadImage')} // Navigate to UploadImagePage
@@ -116,9 +130,23 @@ export default function SideDrawerNavigator() {
       <Drawer.Screen name="FAQs" component={FAQsPage} />
       <Drawer.Screen name="Profile" component={ProfileScreen}/>
       <Drawer.Screen name="AboutUs" component={AboutUsPage} />
-      <Drawer.Screen name="SafetyInsider" component={SafetyInsiderPage}/>
+      <Drawer.Screen
+        name="SafetyInsider"
+        component={SafetyInsiderPage}
+        options={{
+          headerStyle: {
+            backgroundColor: '#373F51', // Your desired color
+          },
+          headerTintColor: '#fff', // Color for the header text
+          headerTitle: 'Safety Insider: Mumbai', // Header Title
+          headerTitleStyle: { fontWeight: 'bold',marginLeft: 50},
+        }}
+      />
+
       <Drawer.Screen name="Settings" component={SettingsPage}/>
       <Drawer.Screen name="UploadImage" component={UploadImagePage} /> 
+      <Drawer.Screen name="Report" component={ReportPage} />
+      <Drawer.Screen name="Home" component={HomePage} />
     </Drawer.Navigator>
   );
 }
@@ -406,7 +434,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   menuContainer: {
-    marginTop: 150,
+    marginTop: 50,
     justifyContent: 'center',
   },
   menuButton: {

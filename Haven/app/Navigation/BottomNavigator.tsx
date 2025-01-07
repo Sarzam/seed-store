@@ -57,7 +57,7 @@ export default function BottomNavigator() {
         style={styles.fab}
         onPress={() => navigation.navigate('UploadImagePage')} // Navigate to UploadImagePage
       >
-        <Icon name="add" size={30} color="#373F51" />
+        <Icon name="add" size={30} color="white" />
       </TouchableOpacity>
     </>
   );
