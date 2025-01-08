@@ -6,13 +6,6 @@ export default function AboutUsPage() {
   return (
     <ScrollView style={styles.container}>
 
-      {/* Hero Section */}
-      <View style={styles.header}>
-              <View style={styles.headerTextContainer}>
-                <Text style={styles.welcomeText}>Know More About Us</Text>
-              </View>
-      </View>
-
       {/* Our Mission Section */}
       <View style={styles.section}>
         <Feather name="compass" size={30} color="#AB0D0D" style={styles.icon} />

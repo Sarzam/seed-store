@@ -109,7 +109,6 @@ const UploadImagePage = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Landmark Image Uploader</Text>
       <TouchableOpacity style={styles.uploadButton} onPress={handleImageUpload}>
         <Text style={styles.uploadButtonText}>Upload Image</Text>
       </TouchableOpacity>

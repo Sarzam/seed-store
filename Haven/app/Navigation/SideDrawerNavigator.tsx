@@ -129,7 +129,16 @@ export default function SideDrawerNavigator() {
       />
       <Drawer.Screen name="FAQs" component={FAQsPage} />
       <Drawer.Screen name="Profile" component={ProfileScreen}/>
-      <Drawer.Screen name="AboutUs" component={AboutUsPage} />
+      <Drawer.Screen name="AboutUs" component={AboutUsPage} 
+      options={{
+        headerStyle:{
+          backgroundColor: '#373F51',
+        },
+        headerTintColor: '#fff',
+        headerTitle: 'Know more About Us',
+        headerTitleStyle: {fontWeight: 'bold',marginLeft: 50},
+      }}
+      />
       <Drawer.Screen
         name="SafetyInsider"
         component={SafetyInsiderPage}
@@ -144,7 +153,14 @@ export default function SideDrawerNavigator() {
       />
 
       <Drawer.Screen name="Settings" component={SettingsPage}/>
-      <Drawer.Screen name="UploadImage" component={UploadImagePage} /> 
+      <Drawer.Screen name="UploadImage" component={UploadImagePage} 
+        options={{
+          headerStyle:{
+            backgroundColor:'#373F51',
+          },
+          headerTitle: ' Upload Nearest Landmark',
+          headerTitleStyle: {fontWeight: 'bold',marginLeft: 35, color:"white"}
+        }}/> 
       <Drawer.Screen name="Report" component={ReportPage} />
       <Drawer.Screen name="Home" component={HomePage} />
     </Drawer.Navigator>
