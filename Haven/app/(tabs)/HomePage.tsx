@@ -23,13 +23,13 @@ const HomeScreen = () => {
       Animated.loop(
         Animated.sequence([
           Animated.timing(animatedValue, {
-            toValue: 2, // Scale up the circle
+            toValue: 2,
             duration: 1500,
             delay: delay,
             useNativeDriver: true,
           }),
           Animated.timing(animatedValue, {
-            toValue: 1, // Reset to original size
+            toValue: 1,
             duration: 0,
             useNativeDriver: true,
           }),
@@ -37,14 +37,13 @@ const HomeScreen = () => {
       ).start();
     };
 
-    pulseAnimation(pulse1, 0); // First pulse starts immediately
-    pulseAnimation(pulse2, 750); // Second pulse starts half-way through
+    pulseAnimation(pulse1, 0);
+    pulseAnimation(pulse2, 750);
   }, []);
 
   return (
     <View style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
+      <View style={[styles.header, styles.shadow]}>
         <View style={styles.headerTextContainer}>
           <Text style={styles.welcomeText}>Welcome!</Text>
           <Text style={styles.userName}>Priyanshi</Text>
@@ -52,8 +51,7 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      {/* SOS Button with Radiation Effect */}
-      <View style={styles.actionContainer}>
+      <View style={[styles.actionContainer, styles.shadow]}>
         <View style={styles.sosContainer}>
           <View style={styles.radiationContainer}>
             <Animated.View
@@ -63,7 +61,7 @@ const HomeScreen = () => {
                   transform: [{ scale: pulse1 }],
                   opacity: pulse1.interpolate({
                     inputRange: [1, 2],
-                    outputRange: [0.5, 0], // Fade out as it expands
+                    outputRange: [0.5, 0],
                   }),
                 },
               ]}
@@ -75,7 +73,7 @@ const HomeScreen = () => {
                   transform: [{ scale: pulse2 }],
                   opacity: pulse2.interpolate({
                     inputRange: [1, 2],
-                    outputRange: [0.5, 0], // Fade out as it expands
+                    outputRange: [0.5, 0],
                   }),
                 },
               ]}
@@ -86,36 +84,44 @@ const HomeScreen = () => {
           </View>
         </View>
 
-        {/* Quick Actions */}
         <View style={styles.quickAccessContainer}>
-          <TouchableOpacity style={styles.quickActionButton}>
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => navigation.navigate("Report")}
+          >
             <Text style={styles.buttonText}>Report Incident</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionButton}>
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => navigation.navigate("UploadImage")}
+          >
             <Text style={styles.buttonText}>Upload Location</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionButton}>
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => navigation.navigate("Contacts")}
+          >
             <Text style={styles.buttonText}>Contacts</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.quickActionButton}>
+          <TouchableOpacity
+            style={styles.quickActionButton}
+            onPress={() => navigation.navigate("Maps")}
+          >
             <Text style={styles.buttonText}>Maps</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Safety Insider Section */}
-      <ScrollView style={styles.safetyInsider}>
+      <ScrollView style={[styles.safetyInsider, styles.shadow]}>
         <Text style={styles.sectionTitle}>Safety Insider</Text>
         <TouchableOpacity
           style={styles.insiderItem}
           onPress={() =>
-            navigation.navigate("SafetyInsider", {
-              articleTitle: "Heatwave Alert: Tips to Stay Hydrated",
-            })
+            navigation.navigate("SafetyInsider", {articleTitle: "Heatwave Alert: Tips to Stay Hydrated",})
           }
         >
           <Text style={styles.insiderTitle}>
-            Heatwave Alert: Tips to Stay Hydrated
+            Personal Safety
           </Text>
           <Text style={styles.insiderDate}>Sep 10, 2024 • 1 min read</Text>
         </TouchableOpacity>
@@ -128,7 +134,7 @@ const HomeScreen = () => {
           }
         >
           <Text style={styles.insiderTitle}>
-            Understanding Emergency Exits
+            Kidnapping
           </Text>
           <Text style={styles.insiderDate}>Sep 09, 2024 • 2 min read</Text>
         </TouchableOpacity>
@@ -140,7 +146,7 @@ const HomeScreen = () => {
             })
           }
         >
-          <Text style={styles.insiderTitle}>Uber Launches a Safety-Cam</Text>
+          <Text style={styles.insiderTitle}>Theft</Text>
           <Text style={styles.insiderDate}>Sep 08, 2024 • 3 min read</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -149,41 +155,31 @@ const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, padding: 20, backgroundColor: "#F2F4F3" 
-  }, // White Smoke
+  container: { flex: 1, padding: 20, backgroundColor: "#F2F4F3" },
   header: {
     padding: 20,
-    backgroundColor: "#8B183F", // Claret
+    backgroundColor: "#8B183F",
     borderRadius: 10,
     marginBottom: 20,
-    elevation: 5, // Added shadow
   },
-  headerTextContainer: { 
-    alignItems: "flex-start" 
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  welcomeText: { 
-    fontSize: 20, color: "#F2F4F3" 
-  }, // White Smoke
-  userName: { 
-    fontSize: 24, fontWeight: "bold", color: "#F2F4F3" 
-  }, // White Smoke
-  greetingText: { 
-    fontSize: 16, color: "#F2F4F3", marginTop: 5 
-  }, // White Smoke
-
+  headerTextContainer: { alignItems: "flex-start" },
+  welcomeText: { fontSize: 20, color: "#F2F4F3" },
+  userName: { fontSize: 24, fontWeight: "bold", color: "#F2F4F3" },
+  greetingText: { fontSize: 16, color: "#F2F4F3", marginTop: 5 },
   actionContainer: {
-    backgroundColor: "#FFFFFF", // White background for SOS & Quick Actions
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     padding: 10,
     marginBottom: 20,
-    elevation: 5,
   },
-  sosContainer: {
-    alignItems: "center",
-    marginBottom: 50,
-    marginTop:20,
-  },
+  sosContainer: { alignItems: "center", marginBottom: 50, marginTop: 20 },
   radiationContainer: {
     alignItems: "center",
     justifyContent: "center",
@@ -191,49 +187,39 @@ const styles = StyleSheet.create({
   },
   radiationCircle: {
     position: "absolute",
-    height: 100, // Starting size
+    height: 100,
     width: 100,
     borderRadius: 60,
-    backgroundColor: "rgba(255, 0, 0, 0.3)", // Red with transparency
+    backgroundColor: "rgba(255, 0, 0, 0.3)",
   },
   sosButton: {
-    backgroundColor: "#AB0D0D", // Turkey Red
-    height: 100, // Circular size
-    width: 100, // Circular size
+    backgroundColor: "#AB0D0D",
+    height: 100,
+    width: 100,
     borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 6,
   },
-  sosText: {
-    color: "#F2F4F3",
-    fontSize: 20,
-    fontWeight: "bold",
-  }, // White Smoke
-
+  sosText: { color: "#F2F4F3", fontSize: 20, fontWeight: "bold" },
   quickAccessContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
   quickActionButton: {
-    backgroundColor: "#373F51", // Charcoal
-    padding: 10, // Reduced padding
+    backgroundColor: "#373F51",
+    padding: 10,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    width: "45%", // Smaller button
+    width: "45%",
     marginBottom: 10,
-    elevation: 4, // Subtle shadow for a modern look
   },
-  buttonText: { 
-    color: "#FFFFFF", fontWeight: "bold" 
-  }, // White text for buttons
-
+  buttonText: { color: "#FFFFFF", fontWeight: "bold" },
   safetyInsider: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#373F51", // Charcoal
+    backgroundColor: "#373F51",
     borderRadius: 10,
     flex: 1,
   },
@@ -242,24 +228,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#F2F4F3",
     marginBottom: 10,
-  }, // White Smoke
+  },
   insiderItem: {
     padding: 10,
-    backgroundColor: "#8B183F", // Claret
+    backgroundColor: "#8B183F",
     borderRadius: 10,
     marginBottom: 10,
-    elevation: 2,
   },
-  insiderTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#F2F4F3",
-  }, // White Smoke
-  insiderDate: {
-    fontSize: 12,
-    color: "#F2F4F3",
-    marginTop: 5,
-  }, // White Smoke
+  insiderTitle: { fontSize: 16, fontWeight: "bold", color: "#F2F4F3" },
+  insiderDate: { fontSize: 12, color: "#F2F4F3", marginTop: 5 },
 });
 
 export default HomeScreen;

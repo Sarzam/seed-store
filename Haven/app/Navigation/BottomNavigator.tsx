@@ -1,6 +1,5 @@
-// BottomNavigator.tsx
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +11,6 @@ import ContactsPage from '../(tabs)/ContactsPage';
 import MoreTabPlaceholder from './MoreTabPlaceholder';
 import UploadImagePage from '../(tabs)/UploadImagePage'; // Ensure this is the correct path
 
-// Create Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
 const tabIcons = {
@@ -23,59 +21,60 @@ const tabIcons = {
 };
 
 export default function BottomNavigator() {
-  const navigation = useNavigation(); // Correctly using useNavigation
+  const navigation = useNavigation();
 
   return (
-    <>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ color, size }) => {
-            const iconName = tabIcons[route.name] || '';
-            return <Icon name={iconName} size={size} color={color} />;
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === '.') {
+            return (
+              <View style={[styles.uploadCircle, focused && styles.uploadCircleFocused]}>
+                <Icon name="add" size={size - 5} color="#fff" />
+              </View>
+            );
+          }
+          const iconName = tabIcons[route.name] || '';
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#373F51',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+      <Tab.Screen name="Maps" component={MapsPage} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="."
+        component={UploadImagePage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen name="Contacts" component={ContactsPage} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="More"
+        component={MoreTabPlaceholder}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.toggleDrawer();
           },
-          tabBarActiveTintColor: '#373F51',
-          tabBarInactiveTintColor: 'gray',
         })}
-      >
-        <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-        <Tab.Screen name="Maps" component={MapsPage} options={{ headerShown: false }} />
-        <Tab.Screen name="Contacts" component={ContactsPage} options={{ headerShown: false }} />
-        <Tab.Screen
-          name="More"
-          component={MoreTabPlaceholder}
-          listeners={({ navigation }) => ({
-            tabPress: (e) => {
-              e.preventDefault();
-              navigation.toggleDrawer();
-            },
-          })}
-        />
-      </Tab.Navigator>
-
-      {/* Floating Action Button (FAB) */}
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('UploadImagePage')} // Navigate to UploadImagePage
-      >
-        <Icon name="add" size={30} color="white" />
-      </TouchableOpacity>
-    </>
+      />
+    </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    bottom: 30,
-    left: '50%',
-    transform: [{ translateX: -30 }],
+  uploadCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     backgroundColor: '#373F51',
-    borderRadius: 50,
-    width: 60,
-    height: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#fff',
+  },
+  uploadCircleFocused: {
+    backgroundColor: '#4C5C72', // Slightly different color when focused
   },
 });

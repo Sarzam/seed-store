@@ -63,7 +63,6 @@ const IncidentReporting = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Report an Incident</Text>
 
       {/* Form Section */}
       <Text style={styles.label}>Incident Description *</Text>

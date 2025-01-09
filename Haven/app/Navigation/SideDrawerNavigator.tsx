@@ -152,7 +152,15 @@ export default function SideDrawerNavigator() {
         }}
       />
 
-      <Drawer.Screen name="Settings" component={SettingsPage}/>
+      <Drawer.Screen name="Settings" component={SettingsPage}
+        options={{
+          headerStyle:{
+            backgroundColor:'#373F51',
+          },
+          headerTitle: 'Settings',
+          headerTitleStyle: {fontWeight: 'bold',marginLeft: 120, color:"white"},
+        }}
+      />
       <Drawer.Screen name="UploadImage" component={UploadImagePage} 
         options={{
           headerStyle:{
@@ -161,7 +169,16 @@ export default function SideDrawerNavigator() {
           headerTitle: ' Upload Nearest Landmark',
           headerTitleStyle: {fontWeight: 'bold',marginLeft: 35, color:"white"}
         }}/> 
-      <Drawer.Screen name="Report" component={ReportPage} />
+      <Drawer.Screen name="Report" component={ReportPage} 
+        options={{
+          headerStyle: {
+            backgroundColor: '#373F51', // Your desired color
+          },
+          headerTintColor: '#fff', // Color for the header text
+          headerTitle: 'Report an Incident', // Header Title
+          headerTitleStyle: { fontWeight: 'bold',marginLeft: 70},
+        }}
+      />
       <Drawer.Screen name="Home" component={HomePage} />
     </Drawer.Navigator>
   );
