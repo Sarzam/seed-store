@@ -1,37 +1,53 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import SignUp from './(tabs)/SignUp';  // Import the SignUp component
+import Login from './(tabs)/Login';    // Import the Login component
 
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+const AuthPage = () => {
+  // State to toggle between SignUp and Login
+  const [isSignUp, setIsSignUp] = useState(true);
 
+  // Function to toggle the state
+  const toggleForm = () => {
+    setIsSignUp(!isSignUp);
+  };
 
-
-
-
-
-export default function NotFoundScreen() {
   return (
-    <>
-      <Stack.Screen options={{ title: 'Oops!' }} />
-      <ThemedView style={styles.container}>
-        <ThemedText type="title">This screen doesn't exist.</ThemedText>
-        <Link href="/" style={styles.link}>
-          <ThemedText type="link">Go to home screen!</ThemedText>
-        </Link>
-      </ThemedView>
-    </>
+    <View style={styles.container}>
+      {isSignUp ? (
+        <SignUp /> // Render SignUp component if isSignUp is true
+      ) : (
+        <Login /> // Render Login component if isSignUp is false
+      )}
+
+      {/* Toggle between SignUp and Login */}
+      <TouchableOpacity onPress={toggleForm} style={styles.toggleTextContainer}>
+        <Text style={styles.toggleText}>
+          {isSignUp
+            ? "."
+            : "."}
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    alignItems: 'center',
+    padding: 5,
+    backgroundColor: '#ffffff',
   },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
+  toggleTextContainer: {
+    marginTop: 20,
+  },
+  toggleText: {
+    color: '#8B183F',
+    fontSize: 16,
+    textDecorationLine: 'underline',
   },
 });
+
+export default AuthPage;

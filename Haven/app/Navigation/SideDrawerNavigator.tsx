@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity, Modal, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import BottomNavigator from './BottomNavigator';
 import FAQsPage from '../(tabs)/FAQsPage';
 import AboutUsPage from '../(tabs)/AboutUsPage';
@@ -11,6 +12,8 @@ import UploadImagePage from '../(tabs)/UploadImagePage';
 import ReportPage from '../(tabs)/ReportPage';
 import HomePage from '../(tabs)/HomePage';
 import { ScrollView } from 'react-native-gesture-handler';
+import Login from '../(tabs)/Login';
+import SignUp from '../(tabs)/SignUp';
 
 const Drawer = createDrawerNavigator();
 
@@ -89,11 +92,24 @@ const CustomDrawerContent = ({ navigation }) => {
       <View style={styles.settingsLogoutContainer}>
         <TouchableOpacity
           style={styles.logoutButtonContainer}
-          onPress={() => alert('Logged out')}
+          onPress={() => navigation.navigate('Login')}
         >
           <Text style={styles.logoutButtonText}>Log Out</Text>
         </TouchableOpacity>
         
+
+        {/* <View style={styles.card}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={styles.deleteText}>Log Out</Text>
+            <Text style={styles.deleteDescription}>
+              This will log you out from your account in the app.
+            </Text>
+          </TouchableOpacity>
+        </View> */}
+
+
         <TouchableOpacity
           style={styles.settingsButton}
           onPress={() => navigation.navigate('Settings')} // Redirect to settings page
@@ -127,6 +143,8 @@ export default function SideDrawerNavigator() {
           
         }}
       />
+      <Drawer.Screen name="SignUp" component={SignUp} />
+      <Drawer.Screen name="Login" component={Login}/>
       <Drawer.Screen name="FAQs" component={FAQsPage} />
       <Drawer.Screen name="Profile" component={ProfileScreen}/>
       <Drawer.Screen name="AboutUs" component={AboutUsPage} 
@@ -184,238 +202,234 @@ export default function SideDrawerNavigator() {
   );
 }
 
-
 const ProfileScreen = () => {
+  const [phone, setPhone] = useState('123-456-7890');
+  const [email, setEmail] = useState('example@example.com');
+  const [password, setPassword] = useState('password123');
+  const [gender, setGender] = useState('Female');
+  const [dob, setDob] = useState('1998-01-01');
+  const [city, setCity] = useState('Rajkot');
+  const [state, setState] = useState('Gujarat');
+  const [country, setCountry] = useState('India');
+  const [pincode, setPincode] = useState('360001');
   const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);
-  const [isChangePasswordModalVisible, setChangePasswordModalVisible] =
-    useState(false);
-  const [isPersonalInfoModalVisible, setPersonalInfoModalVisible] =
-    useState(false);
+  const [isChangePasswordModalVisible, setChangePasswordModalVisible] = useState(false);
+  const [isPersonalInfoModalVisible, setPersonalInfoModalVisible] = useState(false);
 
-  const [email, setEmail] = useState("Priyuvmehta@gmail.com");
-  const [phone, setPhone] = useState("50887508");
-  const [password, setPassword] = useState("******");
-
-  const [gender, setGender] = useState("Female");
-  const [dob, setDob] = useState("1995-05-25");
-  const [country, setCountry] = useState("India");
-  const [state, setState] = useState("Maharashtra");
-  const [city, setCity] = useState("Mumbai");
-  const [pincode, setPincode] = useState("400001");
+  const navigation = useNavigation();
 
   const handleUpdate = () => {
-    Alert.alert("Success", "Contact Info Updated");
+    // Handle update logic here
     setUpdateModalVisible(false);
   };
 
   const handleChangePassword = () => {
-    Alert.alert("Success", "Password Changed");
+    // Handle password change logic here
     setChangePasswordModalVisible(false);
   };
 
   const handlePersonalInfoUpdate = () => {
-    Alert.alert("Success", "Personal Info Updated");
+    // Handle personal info update logic here
     setPersonalInfoModalVisible(false);
   };
 
   return (
     <ScrollView>
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Profile</Text>
-      </View>
-
-      {/* Profile Section */}
-      <View style={styles.profileInfo}>
-        <View style={styles.profileAvatar}>
-          <Text style={styles.avatarText}>PM</Text>
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Profile</Text>
         </View>
-        <Text style={styles.profileName}>Priyanshi Mehta</Text>
-        <Text style={styles.profileId}>{phone}</Text>
-      </View>
 
-      {/* Contact Info */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Contact Info</Text>
-        <View>
-          <Text style={styles.infoLabel}>Phone Number</Text>
-          <Text style={styles.infoValue}>{phone}</Text>
-          <Text style={styles.infoLabel}>Email Address</Text>
-          <Text style={styles.infoValue}>{email}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.updateButton}
-          onPress={() => setUpdateModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>UPDATE</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Password Section */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Password</Text>
-        <Text style={styles.infoValue}>{password}</Text>
-        <TouchableOpacity
-          style={styles.changeButton}
-          onPress={() => setChangePasswordModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>CHANGE</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Personal Info Section */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Personal Info</Text>
-        <View>
-          <Text style={styles.infoLabel}>Gender</Text>
-          <Text style={styles.infoValue}>{gender}</Text>
-          <Text style={styles.infoLabel}>Date of Birth</Text>
-          <Text style={styles.infoValue}>{dob}</Text>
-          <Text style={styles.infoLabel}>Address</Text>
-          <Text style={styles.infoValue}>
-            {city}, {state}, {country} - {pincode}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.updateButton}
-          onPress={() => setPersonalInfoModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>UPDATE</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Delete Account */}
-      <View style={styles.card}>
-        <TouchableOpacity
-          onPress={() => Alert.alert("Delete Account", "This feature is not implemented yet.")}
-        >
-          <Text style={styles.deleteText}>Delete my log-in account</Text>
-          <Text style={styles.deleteDescription}>
-            This will permanently remove your account from the app and web
-            portal.
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Update Modal */}
-      <Modal visible={isUpdateModalVisible} transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Update Contact Info</Text>
-            <TextInput
-              style={styles.input}
-              value={phone}
-              onChangeText={setPhone}
-              placeholder="Enter new phone number"
-              keyboardType="phone-pad"
-            />
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              placeholder="Enter new email"
-              keyboardType="email-address"
-            />
-            <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
-              <Text style={styles.saveButtonText}>SAVE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => setUpdateModalVisible(false)}
-            >
-              <Text style={styles.cancelButtonText}>CANCEL</Text>
-            </TouchableOpacity>
+        {/* Profile Section */}
+        <View style={styles.profileInfo}>
+          <View style={styles.profileAvatar}>
+            <Text style={styles.avatarText}>PM</Text>
           </View>
+          <Text style={styles.profileName}>Priyanshi Mehta</Text>
+          <Text style={styles.profileId}>{phone}</Text>
         </View>
-      </Modal>
 
-      {/* Change Password Modal */}
-      <Modal visible={isChangePasswordModalVisible} transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Change Password</Text>
-            <TextInput
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Enter new password"
-              secureTextEntry
-            />
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={handleChangePassword}
-            >
-              <Text style={styles.saveButtonText}>SAVE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => setChangePasswordModalVisible(false)}
-            >
-              <Text style={styles.cancelButtonText}>CANCEL</Text>
-            </TouchableOpacity>
+        {/* Contact Info */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Contact Info</Text>
+          <View>
+            <Text style={styles.infoLabel}>Phone Number</Text>
+            <Text style={styles.infoValue}>{phone}</Text>
+            <Text style={styles.infoLabel}>Email Address</Text>
+            <Text style={styles.infoValue}>{email}</Text>
           </View>
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={() => setUpdateModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>UPDATE</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
 
-      {/* Personal Info Modal */}
-      <Modal visible={isPersonalInfoModalVisible} transparent>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Update Personal Info</Text>
-            <TextInput
-              style={styles.input}
-              value={gender}
-              onChangeText={setGender}
-              placeholder="Enter gender"
-            />
-            <TextInput
-              style={styles.input}
-              value={dob}
-              onChangeText={setDob}
-              placeholder="Enter date of birth (YYYY-MM-DD)"
-            />
-            <TextInput
-              style={styles.input}
-              value={country}
-              onChangeText={setCountry}
-              placeholder="Enter country"
-            />
-            <TextInput
-              style={styles.input}
-              value={state}
-              onChangeText={setState}
-              placeholder="Enter state"
-            />
-            <TextInput
-              style={styles.input}
-              value={city}
-              onChangeText={setCity}
-              placeholder="Enter city"
-            />
-            <TextInput
-              style={styles.input}
-              value={pincode}
-              onChangeText={setPincode}
-              placeholder="Enter pincode"
-              keyboardType="numeric"
-            />
-            <TouchableOpacity
-              style={styles.saveButton}
-              onPress={handlePersonalInfoUpdate}
-            >
-              <Text style={styles.saveButtonText}>SAVE</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.cancelButton}
-              onPress={() => setPersonalInfoModalVisible(false)}
-            >
-              <Text style={styles.cancelButtonText}>CANCEL</Text>
-            </TouchableOpacity>
-          </View>
+        {/* Password Section */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Password</Text>
+          <Text style={styles.infoValue}>{password}</Text>
+          <TouchableOpacity
+            style={styles.changeButton}
+            onPress={() => setChangePasswordModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>CHANGE</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
-    </View>
+
+        {/* Personal Info Section */}
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Personal Info</Text>
+          <View>
+            <Text style={styles.infoLabel}>Gender</Text>
+            <Text style={styles.infoValue}>{gender}</Text>
+            <Text style={styles.infoLabel}>Date of Birth</Text>
+            <Text style={styles.infoValue}>{dob}</Text>
+            <Text style={styles.infoLabel}>Address</Text>
+            <Text style={styles.infoValue}>
+              {city}, {state}, {country} - {pincode}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={() => setPersonalInfoModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>UPDATE</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Log Out */}
+        <View style={styles.card}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={styles.deleteText}>Log Out</Text>
+            <Text style={styles.deleteDescription}>
+              This will log you out from your account in the app.
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Update Modal */}
+        <Modal visible={isUpdateModalVisible} transparent>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Update Contact Info</Text>
+              <TextInput
+                style={styles.input}
+                value={phone}
+                onChangeText={setPhone}
+                placeholder="Enter new phone number"
+                keyboardType="phone-pad"
+              />
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+                placeholder="Enter new email"
+                keyboardType="email-address"
+              />
+              <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
+                <Text style={styles.saveButtonText}>SAVE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setUpdateModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Change Password Modal */}
+        <Modal visible={isChangePasswordModalVisible} transparent>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Change Password</Text>
+              <TextInput
+                style={styles.input}
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Enter new password"
+                secureTextEntry
+              />
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handleChangePassword}
+              >
+                <Text style={styles.saveButtonText}>SAVE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setChangePasswordModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Personal Info Modal */}
+        <Modal visible={isPersonalInfoModalVisible} transparent>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Update Personal Info</Text>
+              <TextInput
+                style={styles.input}
+                value={gender}
+                onChangeText={setGender}
+                placeholder="Enter gender"
+              />
+              <TextInput
+                style={styles.input}
+                value={dob}
+                onChangeText={setDob}
+                placeholder="Enter date of birth (YYYY-MM-DD)"
+              />
+              <TextInput
+                style={styles.input}
+                value={country}
+                onChangeText={setCountry}
+                placeholder="Enter country"
+              />
+              <TextInput
+                style={styles.input}
+                value={state}
+                onChangeText={setState}
+                placeholder="Enter state"
+              />
+              <TextInput
+                style={styles.input}
+                value={city}
+                onChangeText={setCity}
+                placeholder="Enter city"
+              />
+              <TextInput
+                style={styles.input}
+                value={pincode}
+                onChangeText={setPincode}
+                placeholder="Enter pincode"
+                keyboardType="numeric"
+              />
+              <TouchableOpacity
+                style={styles.saveButton}
+                onPress={handlePersonalInfoUpdate}
+              >
+                <Text style={styles.saveButtonText}>SAVE</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.cancelButton}
+                onPress={() => setPersonalInfoModalVisible(false)}
+              >
+                <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </ScrollView>
   );
 };
@@ -633,6 +647,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#AB0D0D",
     fontWeight: "bold",
+    marginLeft:139,
   },
   deleteDescription: {
     fontSize: 14,

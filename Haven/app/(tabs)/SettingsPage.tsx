@@ -82,24 +82,12 @@ const SettingsPage = () => {
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { fontSize }]}>Permissions</Text>
         <View style={styles.option}>
-          <Text style={[styles.optionText, { fontSize }]}>Allow Contact Access</Text>
-          <Switch
-            value={isContactAccessAllowed}
-            onValueChange={toggleContactAccess}
-            trackColor={{ false: "#DDD", true: "#A0522D" }}
-            thumbColor={isContactAccessAllowed ? "#FFF" : "#8B4513"}
-          />
-        </View>
-      </View>
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { fontSize }]}>Permissions</Text>
-        <View style={styles.option}>
           <Text style={[styles.optionText, { fontSize }]}>Enable Camera</Text>
           <Switch
             value={isCameraEnabled}
             onValueChange={toggleCamera}
-            trackColor={{ false: "#DDD", true: "#A0522D" }}
-            thumbColor={isCameraEnabled ? "#FFF" : "#8B4513"}
+            trackColor={{ false: "#DDD", true: "#373F51" }}
+            thumbColor={isCameraEnabled ? "#DDD" : "#373F51"}
           />
         </View>
         <View style={styles.option}>
@@ -107,8 +95,8 @@ const SettingsPage = () => {
           <Switch
             value={isMicrophoneEnabled}
             onValueChange={toggleMicrophone}
-            trackColor={{ false: "#DDD", true: "#A0522D" }}
-            thumbColor={isMicrophoneEnabled ? "#FFF" : "#8B4513"}
+            trackColor={{ false: "#DDD", true: "#373F51" }}
+            thumbColor={isMicrophoneEnabled ? "#DDD" : "#373F51"}
           />
         </View>
         <View style={styles.option}>
@@ -116,8 +104,8 @@ const SettingsPage = () => {
           <Switch
             value={isGalleryAccessAllowed}
             onValueChange={toggleGalleryAccess}
-            trackColor={{ false: "#DDD", true: "#A0522D" }}
-            thumbColor={isGalleryAccessAllowed ? "#FFF" : "#8B4513"}
+            trackColor={{ false: "#DDD", true: "#373F51" }}
+            thumbColor={isGalleryAccessAllowed ? "#DDD" : "#373F51"}
           />
         </View>
       </View>
@@ -133,8 +121,8 @@ const SettingsPage = () => {
             step={1}
             value={fontSize}
             onValueChange={(value) => setFontSize(value)}
-            minimumTrackTintColor="#A0522D"
-            maximumTrackTintColor="#D3C4B4"
+            minimumTrackTintColor="#373F51"
+            maximumTrackTintColor="#373F51"
           />
           <Text style={[styles.optionText, { fontSize }]}>Current Font Size: {fontSize}</Text>
         </View>
@@ -144,12 +132,12 @@ const SettingsPage = () => {
       <View style={styles.section}>
         <Text style={[styles.sectionTitle, { fontSize }]}>Location Settings</Text>
         <View style={styles.option}>
-          <Text style={[styles.optionText, { fontSize }]}>Share Live Location</Text>
+          <Text style={[styles.optionText, { fontSize }]}>Enableocation</Text>
           <Switch
             value={isLocationShared}
             onValueChange={toggleLocationSharing}
-            trackColor={{ false: "#DDD", true: "#A0522D" }}
-            thumbColor={isLocationShared ? "#FFF" : "#8B4513"}
+            trackColor={{ false: "#DDD", true: "#373F51" }}
+            thumbColor={isLocationShared ? "#DDD" : "#373F51"}
           />
         </View>
       </View>
@@ -165,8 +153,8 @@ const SettingsPage = () => {
               <Switch
                 value={option1Enabled}
                 onValueChange={toggleOption1}
-                trackColor={{ false: "#DDD", true: "#A0522D" }}
-                thumbColor={option1Enabled ? "#FFF" : "#8B4513"}
+                trackColor={{ false: "#DDD", true: "#373F51" }}
+                thumbColor={option1Enabled ? "#DDD" : "#373F51"}
               />
             </View>
             <View style={styles.option}>
@@ -174,8 +162,8 @@ const SettingsPage = () => {
               <Switch
                 value={option2Enabled}
                 onValueChange={toggleOption2}
-                trackColor={{ false: "#DDD", true: "#A0522D" }}
-                thumbColor={option2Enabled ? "#FFF" : "#8B4513"}
+                trackColor={{ false: "#DDD", true: "#373F51" }}
+                thumbColor={option2Enabled ? "#DDD" : "#373F51"}
               />
             </View>
             <View style={styles.option}>
@@ -183,8 +171,8 @@ const SettingsPage = () => {
               <Switch
                 value={option3Enabled}
                 onValueChange={toggleOption3}
-                trackColor={{ false: "#DDD", true: "#A0522D" }}
-                thumbColor={option3Enabled ? "#FFF" : "#8B4513"}
+                trackColor={{ false: "#DDD", true: "#373F51" }}
+                thumbColor={option3Enabled ? "#DDD" : "#373F51"}
               />
             </View>
             
@@ -199,7 +187,7 @@ const SettingsPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F3EDE2",
+    backgroundColor: "#fff",
   },
   header: {
     paddingVertical: 20,
@@ -228,11 +216,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#D3C4B4",
+    borderBottomColor: "#373F51",
   },
   optionText: {
     fontSize: 16,
-    color: "#6A4C42",
+    color: "#373F51",
   },
   sliderContainer: {
     alignItems: "center",

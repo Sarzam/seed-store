@@ -9,7 +9,9 @@ import HomePage from '../(tabs)/HomePage';
 import MapsPage from '../(tabs)/Maps';
 import ContactsPage from '../(tabs)/ContactsPage';
 import MoreTabPlaceholder from './MoreTabPlaceholder';
-import UploadImagePage from '../(tabs)/UploadImagePage'; // Ensure this is the correct path
+import UploadImagePage from '../(tabs)/UploadImagePage'; 
+import Login from '../(tabs)/Login';
+import SignUp from '../(tabs)/SignUp';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,6 +43,9 @@ export default function BottomNavigator() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
+
+      <Tab.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <Tab.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
       <Tab.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
       <Tab.Screen name="Maps" component={MapsPage} options={{ headerShown: false }} />
       <Tab.Screen
