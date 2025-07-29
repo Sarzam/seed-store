@@ -20,6 +20,8 @@ Users can anonymously share past experiences, building awareness for others.
 🔒 Safety Insights
 Practical safety tips to avoid theft, harassment, kidnapping, and other threats.
 
+![WhatsApp Image 2025-07-29 at 23 31 19_eb8444ba](https://github.com/user-attachments/assets/1aec048d-4341-46b5-9c08-0798a1db6c98)
+
 ![WhatsApp Image 2025-07-29 at 23 31 34_fd713c7f](https://github.com/user-attachments/assets/801bec14-e620-4774-af6b-893476c158ff)
 
 
